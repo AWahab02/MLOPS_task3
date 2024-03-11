@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from main branch
+                script {
+                    checkout scm
+                }
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build code
+                sh 'your_build_command_here'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Test code
+                sh 'your_test_command_here'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deploy based on branch name
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        // Deploy to main
+                        sh 'your_deploy_to_main_command_here'
+                    } else if (env.BRANCH_NAME == 'dev') {
+                        // Deploy to dev
+                        sh 'your_deploy_to_dev_command_here'
+                    } else {
+                        echo "Branch not supported for deployment"
+                    }
+                }
+            }
+        }
+    }
+}

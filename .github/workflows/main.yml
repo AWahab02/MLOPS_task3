@@ -1,0 +1,29 @@
+name: MLOPS_Task2_Workflow_on_push
+
+on:
+  push:
+    branches:
+      - main # the branch to execute 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.12' # The python version to set up
+
+      - name: Install dependancies
+        run:  |
+          make install
+
+      - name: test code
+        run: |
+          make test
+          
+        
