@@ -4,37 +4,34 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from main branch
                 script {
-                    checkout scm
-                }
+                    checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/AWahab02/MLOPS_task3.git']])                }
             }
         }
         
         stage('Build') {
             steps {
-                // Build code
-                sh 'your_build_command_here'
+                withPythonEnv('python'){
+                    sh 'make install'
+                }
             }
         }
         
         stage('Test') {
             steps {
-                // Test code
-                sh 'your_test_command_here'
+                withPythonEnv('python'){
+                    sh 'make test'
+                }
             }
         }
         
         stage('Deploy') {
             steps {
-                // Deploy based on branch name
                 script {
                     if (env.BRANCH_NAME == 'main') {
-                        // Deploy to main
-                        sh 'your_deploy_to_main_command_here'
+                        echo 'deployed to main'
                     } else if (env.BRANCH_NAME == 'dev') {
-                        // Deploy to dev
-                        sh 'your_deploy_to_dev_command_here'
+                        echo 'deployed to dev'
                     } else {
                         echo "Branch not supported for deployment"
                     }
